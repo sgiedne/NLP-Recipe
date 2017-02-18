@@ -12,4 +12,4 @@
 
 • If there are any conflicts, developer should resolve the conflicts before checking in
 
-• For every commit, kindly enter the appropriate commit message. Template of the message is "Updated landing page checklist tags || [Developer Name] || 12 Feb 2017" 
+• For every commit, kindly enter the appropriate commit message. Template of the message is "[Task] Eg.Updated landing page checklist tags|| [Developer Name] Eg.John || [Date] Eg. 12 Feb 2017" 
