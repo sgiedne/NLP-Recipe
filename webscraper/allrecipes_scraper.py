@@ -1,32 +1,28 @@
 from bs4 import BeautifulSoup
 import urllib2
 
-page = urllib2.urlopen('http://allrecipes.com/recipe/lasagna-alfredo/').read()
-soup = BeautifulSoup(page,"lxml")
 
-ingredient_list = soup.findAll(itemprop="ingredients")
+def getrecipe(url):
+	page = urllib2.urlopen(url).read()
+	soup = BeautifulSoup(page,"lxml")
 
-ingredients = {}
+	ingredient_list = soup.findAll(itemprop="ingredients")
 
-for ingredient in ingredient_list:
-	#print ingredient
-	quantity = ingredient.text.split(' ',1)[0]
-	#print quantity 
-	item = ingredient.text.split(' ',1)[1]
-	# i = []
-	# i.append(quantity)
-	# i.append(item)
-	ingredients[item] = quantity
+	ingredients = {}
 
-for ingredient in ingredients:
-	print ingredients[ingredient], ingredient
+	for ingredient in ingredient_list:
+		quantity = ingredient.text.split(' ',1)[0]
+		item = ingredient.text.split(' ',1)[1]
+		ingredients[item] = quantity
 
-direction_list = soup.findAll("span",{"class" : "recipe-directions__list--item"})
+	direction_list = soup.findAll("span",{"class" : "recipe-directions__list--item"})
 
-print "\n"
-directions = []
-for direction in direction_list:
-	directions.append(direction.text)
+	directions = []
+	for direction in direction_list:
+		directions.append(direction.text)
 
-for d in directions:
-	print d
+	recipe = []
+	recipe.append(ingredients)
+	recipe.append(directions)
+
+	return recipe
