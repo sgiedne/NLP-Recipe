@@ -46,7 +46,7 @@ def getIngredients(url):
 	raw_ingredients = getrecipe(url)[0]
 	ingredients = []
 	for i in raw_ingredients:
-		#ingredient is a list containing -> Quantity, Measurements, Descriptors/Preparation, Ingredient name
+		#ingredient is a list containing -> Quantity, Measurements[], Descriptors/Preparation[], Ingredient name
 		ingredient = []
 		measures = []
 		prep = []
