@@ -4,6 +4,8 @@ import re
 from nltk.tokenize import word_tokenize
 from nltk.tag import pos_tag
 from nltk.chunk import ne_chunk
+import json
+import unicodedata
 
 common_meausurements = ['package','cup','cups','teaspoon','teaspoons',
 						'tablespoon','tablespoons','clove','cloves','ounce',
@@ -81,7 +83,29 @@ def getIngredients(url):
 		ingredient.append(item)
 		ingredients.append(ingredient)
 
-	for i in ingredients:
-		print i
+	ingredient_json = {}
+	extern_count = 1
+	for line in ingredients:
+		intern_count = 1
+		json_data = {}
+		for categ in line:
+			if intern_count == 1:
+				json_data.update({'quantity': categ})
+			elif intern_count == 2:
+					json_data.update({'measures': categ})
+			elif intern_count == 3:
+				json_data.update({'prep': categ})
+			elif intern_count == 4:
+				json_data.update({'item': categ})
+			intern_count+=1
+		temp = {extern_count : json_data}	
+		ingredient_json.update(temp)
+		extern_count+=1
+
+	# for key in ingredient_json:
+	# 	print key
+	# 	print ingredient_json[key]
+
+	return ingredient_json
 
 getIngredients('http://allrecipes.com/recipe/22478/cheesy-vegetable-lasagna/')
