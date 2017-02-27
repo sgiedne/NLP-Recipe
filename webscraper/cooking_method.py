@@ -34,8 +34,9 @@ mList = ["Amandine", "Anti-griddle",
 def get_method(directions):
 	array = []
 	for i in range(0, len(mList)):
-		str = ".*(" + mList[i] + "|" + mList[i].lower() + ").*"
-		if re.match(str, directions.text):
+		if mList[i] in directions.text or mList[i].lower() in directions.text:
+# 		str = ".*(" + mList[i] + "|" + mList[i].lower() + ").*"
+# 		if re.match(str, directions.text):
 			array.append(mList[i])
 	return array
 
