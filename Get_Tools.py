@@ -1,69 +1,49 @@
+'''
+Pending improvements
+
+- Eureka, 3/4/2017
+Not sure how to get a match if a tool has more than one word (e.g., "baking dish")
+
+'''
+
 from bs4 import BeautifulSoup
-from urllib.request import urlopen
-
-
-
+import urllib2
+from nltk.tokenize import word_tokenize
 
 completeKitchenWare= []
 kitchenWareIncluded= []
 filename="kitchware.txt"
 
-############ For TXT without the newline character####
-##with open("kitchware.txt") as f:
-##     completeKitchenWare= f.readlines()
-
-completeKitchenWare = [line.rstrip('\n') for line in open(filename)]
-
+completeKitchenWare = [line.rstrip('\r''\n') for line in open(filename)]
      
-page = urlopen('http://allrecipes.com/recipe/lasagna-alfredo/').read()
+page = urllib2.urlopen('http://allrecipes.com/recipe/lasagna-alfredo/').read()
 soup = BeautifulSoup(page,"lxml")
-
-
-def getrecipe(url):
-	page = urllib2.urlopen(url).read()
-	soup = BeautifulSoup(page,"lxml")
-
-	ingredient_list = soup.findAll(itemprop="ingredients")
-
-ingredients = {}
-
-
-for ingredient in ingredients:
-	print (ingredients[ingredient], ingredient)
-
-	for ingredient in ingredient_list:
-		quantity = ingredient.text.split(' ',1)[0]
-		item = ingredient.text.split(' ',1)[1]
-		ingredients[item] = quantity
-
 
 direction_list = soup.findAll("span",{"class" : "recipe-directions__list--item"})
 
-
-print ("\n")
+# Create a list with all of the directions, broken down by word
 directions = []
 for direction in direction_list:
-	directions.append(direction.text)
+	words = word_tokenize(direction.text)
+	directions.append(words)
 
-##for d in directions:
-##	print (d)
+# Transform all the words in the directions from unicode into strings
+directions_str = []
+i = 0
+while i < len(directions):
+	for word in directions[i]:
+		directions_str.append(str(word))
+	i += 1
+    
+# Check if each word in directions_str is in the kitchenware list
+for word in directions_str: 
+	if word.lower() in (tool.lower() for tool in completeKitchenWare):
+	    kitchenWareIncluded.append(word)
 
-
-
-     
-for direction in directions:      
-   for kitchenWare in completeKitchenWare:              
-        if kitchenWare.lower() in direction.lower():
-                     #print("true")
-                     kitchenWareIncluded.append(kitchenWare)
-      
-
-print ("The tool included in this receipt are:")
-if len(kitchenWareIncluded) ==0:
-        print ("none")
-#print(kitchenWareIncluded)
+# Print out the list of included tools
+print ("The tools included in this receipt are:")
+if len(kitchenWareIncluded) == 0:
+    print ("none")
 else:
-        for kitchenWare in kitchenWareIncluded:
-                print(kitchenWare)
-
-
+    for kitchenWare in kitchenWareIncluded:
+        print(kitchenWare)
