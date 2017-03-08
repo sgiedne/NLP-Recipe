@@ -1,3 +1,8 @@
+'''
+Notes from Eureka:
+-measurements spelled incorrectly in "common_meausurements"
+'''
+
 from bs4 import BeautifulSoup
 import urllib2
 import re
@@ -15,37 +20,81 @@ common_meausurements = ['package','cup','cups','teaspoon','teaspoons',
 						'containers']
 
 prep_list = [
-"acidic", "aromatic", 
-"bitter", "bland", "blended", "browned", "burnt", "buttery", "baked", "blazed", "boiled", 
-"chalky", "cheesy", "chewy", "chocolaty", "cinnamony", "citrusy", "cool", "creamy", "crispy", "crumbly", "crunchy", "crusty", "caked", "candied",
-"caramelized", "char-boiled", "cheesy", "chilled", "chunked", "classy", "cold", "crafted", "creamed", "cured", 
-"doughy", "dry", "dull", "deep-fried", "dressed", "drizzled", 
-"earthy", "eggy", "encrusted", 
-"fatty", "fiery", "fishy", "fizzy", "flaky", "flat", "flavourful", "flavourless", "fleshy", "fluffy", "fruity", "furry", "fetid",
-"flavored", "fresh", "freshly", "fine", "finely", "frosty", "frosted", 
-"garlicky", "gelatinous", "grainy", "greasy", "golden", "gooey", "gritty", "gingery", "glazed", "grilled", "gustatory", 
-"hearty", "heavy", "honeyed", "hot", "half", "harsh", "honeyed", "honey-glazed", "hot", "heat", "heated", 
-"icy", "intense", "ice-cold", "incisive", "infused", 
-"juicy", "jumbo", 
-"light", "leathery", "lemony", "lukewarm", "layered", "large", "lavish", "lean", "lemon-less", "lightly", "lively", "low", "luscious", "lush",  
-"meaty", "mashed", "mild", "milky", "minty", "moist", "mushy", "marinated", "mellow", "minty", "moist", "moisted", "melt", "melted", 
-"nutmeggy", "nutty", 
-"oily", "oniony", "overpowering", "organic", 
-"peppery", "pickled", "plain", "pleasant", "powdery", "pulpy", "pureed", "piquant", "pounded", "prickly", 
-"rancid", "rank", "raw", "refreshing", "rich", "ripe", "roasted", "rotten", "rubbery", "runny", "refresh", 
-"salty", "satiny", "savoury", "seasoned", "sharp", "silky", "sizzling", "slimy", "smelly", "smoky", "smooth", "soggy", "sour", "spicy",
-"spongy", "stale", "sticky", "stinging", "stringy", "strong", "succulent", "sugary", "sweet", "sour", "syrupy", "saporous", "satin", 
-"sauteed", "silky", "simmered", "sizzling", "small", "smoked", "soothing", "spiced", "spiral-cut", "spongy", "sprinkled", "steamed",
-"sticky", "sugary", "sugarless", "syrupy", "spread", "salted", 
-"tangy", "tantalizing", "tart", "tasteless", "tasty", "tepid", "toasted", "tough", "thick", "thin", "toothsome", "topped", "tossed", "tough", "treacly", "treat", 
-"unflavored", "unsavory", "unseasoned", 
-"vanillary", "velvety", "vinegary", 
-"warm", "watery", "waxy", "whipped", "woody", 
-"yeasty", 
-"zesty", "zingy"
+	"acidic", "aromatic", 
+	"bitter", "bland", "blended", "browned", "burnt", "buttery", "baked", "blazed", "boiled", 
+	"chalky", "cheesy", "chewy", "chocolaty", "cinnamony", "citrusy", "cool", "creamy", "crispy", "crumbly", "crunchy", "crusty", "caked", "candied",
+	"caramelized", "char-boiled", "cheesy", "chilled", "chunked", "classy", "cold", "crafted", "creamed", "cured", 
+	"doughy", "dry", "dull", "deep-fried", "dressed", "drizzled", 
+	"earthy", "eggy", "encrusted", 
+	"fatty", "fiery", "fishy", "fizzy", "flaky", "flat", "flavourful", "flavourless", "fleshy", "fluffy", "fruity", "furry", "fetid",
+	"flavored", "fresh", "freshly", "fine", "finely", "frosty", "frosted", 
+	"garlicky", "gelatinous", "grainy", "greasy", "golden", "gooey", "gritty", "gingery", "glazed", "grilled", "gustatory", 
+	"hearty", "heavy", "honeyed", "hot", "half", "harsh", "honeyed", "honey-glazed", "hot", "heat", "heated", 
+	"icy", "intense", "ice-cold", "incisive", "infused", 
+	"juicy", "jumbo", 
+	"light", "leathery", "lemony", "lukewarm", "layered", "large", "lavish", "lean", "lemon-less", "lightly", "lively", "low", "luscious", "lush",  
+	"meaty", "mashed", "mild", "milky", "minty", "moist", "mushy", "marinated", "mellow", "minty", "moist", "moisted", "melt", "melted", 
+	"nutmeggy", "nutty", 
+	"oily", "oniony", "overpowering", "organic", 
+	"peppery", "pickled", "plain", "pleasant", "powdery", "pulpy", "pureed", "piquant", "pounded", "prickly", 
+	"rancid", "rank", "raw", "refreshing", "rich", "ripe", "roasted", "rotten", "rubbery", "runny", "refresh", 
+	"salty", "satiny", "savoury", "seasoned", "sharp", "silky", "sizzling", "slimy", "smelly", "smoky", "smooth", "soggy", "sour", "spicy",
+	"spongy", "stale", "sticky", "stinging", "stringy", "strong", "succulent", "sugary", "sweet", "sour", "syrupy", "saporous", "satin", 
+	"sauteed", "silky", "simmered", "sizzling", "small", "smoked", "soothing", "spiced", "spiral-cut", "spongy", "sprinkled", "steamed",
+	"sticky", "sugary", "sugarless", "syrupy", "spread", "salted", 
+	"tangy", "tantalizing", "tart", "tasteless", "tasty", "tepid", "toasted", "tough", "thick", "thin", "toothsome", "topped", "tossed", "tough", "treacly", "treat", 
+	"unflavored", "unsavory", "unseasoned", 
+	"vanillary", "velvety", "vinegary", 
+	"warm", "watery", "waxy", "whipped", "woody", 
+	"yeasty", 
+	"zesty", "zingy"
+]
+
+protein_list = [
+	"anchovy", "anchovies",
+	"beef",
+	"chicken", 
+	"duck", 
+	"egg", "eggs", 
+	"fillet", "fish", 
+	"mussels"
+	"lamb", 
+	"oyster", "oysters",
+	"pigeon", "pork", "prawn", "prawns",
+	"rabbit", "rib", "ribs"
+	"salmon", "sardine", "sardines", "sausage", "shrimp", "shrimps",
+	"trout", "tuna", "turkey", 
+	"veal", "venison"   
+]
+
+herb_list = [
+	"basil", "bay",
+	"cayenne", "chives", "cilantro", "coriander",
+	"fennel",
+	"marjoram",
+	"nutmeg",
+	"oregano", 
+	"paprika", "parsley", "pepper",
+	"rosemary",
+	"thyme"
+]
+
+sauce_list = [
+	"cheese", 
+	"paste"
+]
+
+cooked_carb_list = [
+	"lasagna",
+	"noodles",
+	"pasta",
+	"rice", "rigatoni", 
+	"spaghetti", 
+	"vermicelli"
 ]
 
 
+state_list = ["broth", "soup"]
 
 
 def getrecipe(url):
@@ -59,7 +108,7 @@ def getrecipe(url):
 	for ingredient in ingredient_list:
 		quantity = ingredient.text.split(' ',1)[0]
 		item = ingredient.text.split(' ',1)[1]
-		temp  = []
+		temp = []
 		temp.append(quantity)
 		temp.append(item)
 		ingredients.append(temp)
@@ -93,6 +142,7 @@ def getIngredients(url):
 		measures = []
 		prep = []
 		desc = []
+		type_ingredient = []
 		
 		
 		#get quantity
@@ -144,11 +194,37 @@ def getIngredients(url):
 
 					if prep_chunks[index-1][0].lower() in prep_list:
 						prep.append(prep_chunks[index-1][0])
-						
+		
+		#Check what type of ingredient it is
+		is_protein = False
+		is_herb = False
+		is_sauce = False
+		is_cooked_carb = False
+		words = word_tokenize(item)
+		for word in words:
+			if word.lower() in protein_list:
+				is_protein = True
+			if word.lower() in herb_list:
+				is_herb = True
+			if word.lower() in sauce_list:
+				is_sauce = True
+			if word.lower() in cooked_carb_list:
+				is_cooked_carb = True
+		if is_protein:
+			type_ingredient.append("protein")
+		elif is_herb:
+			type_ingredient.append("herb")
+		elif is_sauce:
+			type_ingredient.append("sauce")
+		elif is_cooked_carb:
+			type_ingredient.append("cooked_carb")
+		else:
+			type_ingredient.append("other")
 					
 		ingredient.append(desc)
 		ingredient.append(item)
 		ingredient.append(prep)
+		ingredient.append(type_ingredient)
 		ingredients.append(ingredient)
 
 	ingredient_json = {}
@@ -167,6 +243,8 @@ def getIngredients(url):
 				json_data.update({'item': categ})
 			elif intern_count == 5:
 				json_data.update({'prep': categ})
+			elif intern_count == 6:
+				json_data.update({'type of ingredient': categ})
 			intern_count+=1
 		temp = {extern_count : json_data}	
 		ingredient_json.update(temp)
