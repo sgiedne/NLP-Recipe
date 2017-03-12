@@ -1,5 +1,6 @@
 '''
-Notes from Eureka:
+Notes:
+
 -measurements spelled incorrectly in "common_meausurements"
 '''
 
@@ -22,7 +23,7 @@ common_meausurements = ['package','cup','cups','teaspoon','teaspoons',
 prep_list = [
 	"acidic", "aromatic", 
 	"bitter", "bland", "blended", "browned", "burnt", "buttery", "baked", "blazed", "boiled", 
-	"chalky", "cheesy", "chewy", "chocolaty", "cinnamony", "citrusy", "cooked", "cool", "creamy", "crispy", "crumbly", "crunchy", "crusty", "caked", "candied",
+	"chalky", "cheesy", "chewy", "chocolaty", "cinnamony", "citrusy", "cool", "creamy", "crispy", "crumbly", "crunchy", "crusty", "caked", "candied",
 	"caramelized", "char-boiled", "cheesy", "chilled", "chunked", "classy", "cold", "crafted", "creamed", "cured", 
 	"doughy", "dry", "dull", "deep-fried", "dressed", "drizzled", 
 	"earthy", "eggy", "encrusted", 
@@ -94,10 +95,7 @@ cooked_carb_list = [
 ]
 
 
-soup_list = [
-	"broth", 
-	"soup"
-]
+state_list = ["broth", "soup"]
 
 
 def getrecipe(url):
@@ -203,7 +201,6 @@ def getIngredients(url):
 		is_herb = False
 		is_sauce = False
 		is_cooked_carb = False
-		is_soup = False
 		words = word_tokenize(item)
 		for word in words:
 			if word.lower() in protein_list:
@@ -214,8 +211,6 @@ def getIngredients(url):
 				is_sauce = True
 			if word.lower() in cooked_carb_list:
 				is_cooked_carb = True
-			if word.lower() in soup_list:
-				is_soup = True
 		if is_protein:
 			type_ingredient.append("protein")
 		elif is_herb:
@@ -224,8 +219,6 @@ def getIngredients(url):
 			type_ingredient.append("sauce")
 		elif is_cooked_carb:
 			type_ingredient.append("cooked_carb")
-		elif is_soup:
-			type_ingredient.append("soup")
 		else:
 			type_ingredient.append("other")
 					
@@ -244,7 +237,7 @@ def getIngredients(url):
 			if intern_count == 1:
 				json_data.update({'quantity': categ})
 			elif intern_count == 2:
-				json_data.update({'measures': categ})
+					json_data.update({'measures': categ})
 			elif intern_count == 3:
 				json_data.update({'desc': categ})
 			elif intern_count == 4:
@@ -261,11 +254,11 @@ def getIngredients(url):
 	for key in ingredient_json:
 		print key
 		print ingredient_json[key]
-		return ingredient_json
+
+	return ingredient_json
 
 # getIngredients('http://allrecipes.com/recipe/22478/cheesy-vegetable-lasagna/')
 # ingredient_list1=getIngredients('http://allrecipes.com/recipe/lasagna-alfredo/')
-
 ingredient_list2=getIngredients('http://allrecipes.com/recipe/234312/how-to-make-focaccia/')
 ingredient_list3=getIngredients('http://allrecipes.com/recipe/222680/bon-appetits-meatballs')
 ingredient_list4=getIngredients('http://allrecipes.com/recipe/246528/stracciatella-soup/')
@@ -281,4 +274,3 @@ ingredient_list13=getIngredients('http://allrecipes.com/recipe/20669/double-toma
 ingredient_list14=getIngredients('http://allrecipes.com/recipe/25321/eggplant-parmesan-ii/')
 ingredient_list15=getIngredients('http://allrecipes.com/recipe/70522/garlic-cheddar-chicken/')
 ingredient_list5=getIngredients('http://allrecipes.com/recipe/85389/gourmet-mushroom-risotto/')
-ingredient_list16=getIngredients('http://allrecipes.com/recipe/244688/white-coq-au-vin/')
