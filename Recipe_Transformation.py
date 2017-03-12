@@ -199,8 +199,8 @@ def getIngredients(url):
 		types = []
 
 		# get quantity
-		if not i[0].isdigit():
-			i[0] = '1'
+		# if not i[0].isdigit():
+		# 	i[0] = '1'
 		ingredient.append(i[0])
 		item = i[1]
 
@@ -243,10 +243,11 @@ def getIngredients(url):
 				prep_chunks = pos_tag(word_tokenize(j))
 
 				for d in prep_chunks:
-					if d[0].lower() == item2[0].lower():
-						selected = index
-						break
-					index = index + 1	
+					if len(item2) > 0:
+						if d[0].lower() == item2[0].lower():
+							selected = index
+							break
+						index = index + 1	
 
 				if selected > 0:
 					if prep_chunks[index-2][0].lower() in preparation_list:
@@ -340,22 +341,26 @@ def getAllData(url):
 	all_json.update({'tools':tools})
 	
 	print all_json
-	print "##### Extracting ingredients #####"
-	print all_json["ingredients"]
-	print "##### Extracting methods #####"
-	print all_json["methods"]
+	# print "##### Extracting ingredients #####"
+	# print all_json["ingredients"]
+	# print "##### Extracting methods #####"
+	# print all_json["methods"]
 	print "##### Extracting tools #####"
 	print all_json["tools"]
-	print ""
+	# print ""
 	return all_json
 
 def transform(orig, sel):
-	print "########## Reciple Transformation ##########"
+	print "########## Recipe Transformation ##########"
 	orig["tools"] = ['AAA', 'BBB']
 	print orig
 
-original_recipe = getAllData('http://allrecipes.com/recipe/lasagna-alfredo/')
+# original_recipe = getAllData('http://allrecipes.com/recipe/lasagna-alfredo/')
+# original_recipe = getAllData('http://allrecipes.com/recipe/8732/poppy-seed-chicken')
+original_recipe = getAllData('http://allrecipes.com/recipe/214029/lamb-shawarma')
+# original_recipe = getAllData('http://allrecipes.com/recipe/216879/mediterranean-meat-pies-sfeeha')
 
+# original_recipe = getAllData('http://allrecipes.com/recipe/27253/canadian-cedar-planked-salmon')
 
 
 # getAllData('http://allrecipes.com/recipe/234312/how-to-make-focaccia/')
@@ -369,10 +374,17 @@ original_recipe = getAllData('http://allrecipes.com/recipe/lasagna-alfredo/')
 # getAllData('http://allrecipes.com/recipe/23600/worlds-best-lasagna/')
 # getIngredients('http://allrecipes.com/recipe/lasagna-alfredo/')
 
-selection = raw_input("What kind of transformation do you want? ")
-print "You chose " + selection
+# sel = "0"
+# while 1:
+# 	sel = raw_input("What kind of transformation do you want? ")
+# 	if sel == "1" or sel == "2" or sel == "3" or sel == "4" or sel == "5":
+# 		print "You chose " + sel
+# 		break;
 
-transform(original_recipe, selection)
+
+
+
+# transform(original_recipe, sel)
 
 
 # ingredient_list2=getIngredients('http://allrecipes.com/recipe/234312/how-to-make-focaccia/')
