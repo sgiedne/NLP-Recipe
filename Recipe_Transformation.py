@@ -145,7 +145,9 @@ cooked_carb_list = [
 "spaghetti", 
 "vermicelli"]
 
-state_list = ["broth", "soup"]
+soup_list = [
+"broth", 
+"soup"]
 
 
 def getRecipe(url):
@@ -266,8 +268,8 @@ def getIngredients(url):
 				types.append("sauce")
 			elif word.lower() in cooked_carb_list:
 				types.append("cooked_carb")
-			elif word.lower() in state_list:
-				types.append("state")
+			elif word.lower() in soup_list:
+				types.append("soup")
 
 		ingredient.append(desc)
 		# ingredient.append(item)
@@ -328,6 +330,9 @@ def getTools(url):
 				tool.append(item)
 	return tool
 
+def getSteps(url):
+	return getRecipe(url)[1]
+
 def getAllData(url):
 	print "########## Recipe Data Representation (" + url + ") ##########"
 	all_json = {}
@@ -350,11 +355,94 @@ def getAllData(url):
 	return all_json
 
 def transform(orig, sel):
-	print "########## Reciple Transformation ##########"
-	orig["tools"] = ['AAA', 'BBB']
-	print orig
 
-original_recipe = getAllData('http://allrecipes.com/recipe/lasagna-alfredo/')
+	print "########## Recipe Transformation ##########"
+	orig["tools"] = ['AAA', 'BBB']
+	got_garlic = False
+	got_onion = False
+	got_sauce = False
+	got_mushroom = False
+	got_fresh_herb = False
+
+	transformation_notes = []
+
+	#DIY TO EASY TRANSFORMATION 
+	if sel == "easy":
+		for key in orig["ingredients"]:
+			this_ingredient = orig["ingredients"][key]
+
+			#Change all fresh herbs to dried herbs
+			if "herb" in this_ingredient["type"]:
+				got_fresh_herb = True
+				i = 0
+				while i < len(this_ingredient["item"]):
+					if "fresh" in str(this_ingredient["item"][i]):
+						this_ingredient["item"][i]	= u'dried'
+					i += 1
+				
+				if "freshly" in str(this_ingredient["desc"]):
+					this_ingredient["desc"] = u'dried'
+
+			#Change all uncooked pasta to cooked pasta
+			if "cooked_carb" in this_ingredient["type"]:
+				this_ingredient["desc"] = u'cooked'
+				name_of_ingredient = ""
+				for i in this_ingredient["item"]:
+					name_of_ingredient += str(i)
+					name_of_ingredient += " "
+				transformation_notes.append("You can skip cooking the " + name_of_ingredient)
+
+			#Change all raw chicken to cooked chicken
+			if "protein" in this_ingredient["type"]:
+				i = 0
+				while i < len(this_ingredient["item"]):
+					if "chicken" in str(this_ingredient["item"][i]):
+						this_ingredient["item"][i]	= u'cooked chicken'
+						transformation_notes.append("When using cooked chicken, you can skip cooking the chicken or cook for less time")
+					i += 1
+
+		#Check if there is there is garlic, onion, mushroom, or sauce mentioned in the steps
+		for step in getRecipe(url)[1]:
+			if "garlic" in step:
+				got_garlic = True
+			if "sauce" in step:
+				got_sauce = True
+			if "onion" in step:
+				got_onion = True
+			if "mushroom" in step:
+				got_mushroom = True
+
+		#Add tips to the notes section
+		if got_fresh_herb:
+			transformation_notes.append("You can use dried instead of fresh herbs")
+		if got_garlic:
+			transformation_notes.append("You may be able to get pre-minced garlic in the store")
+		if got_sauce:
+			transformation_notes.append("You may be able to find pre-made sauce in the store")
+		if got_onion:
+			transformation_notes.append("You may be able to find pre-cut onions in the store")
+		if got_mushroom:
+			transformation_notes.append("You may be able to find pre-sliced mushrooms in the store")
+
+		#Print all of the new ingredients, steps, and notes
+		print "##### New Ingredients #######"
+		for key in orig["ingredients"]:
+			print orig["ingredients"][key]
+
+		print "##### New Steps #######"
+		print "--NOTES--"
+		for i in transformation_notes:
+			print i
+		print "--STEPS--"
+		for step in getRecipe(url)[1]:
+			print step
+
+	#DIY TO SUPER EASY TRANSFORMATION
+	if sel == "super easy":
+		print "Just go to a restaurant already!"
+
+url = 'http://allrecipes.com/recipe/246866/rigatoni-alla-genovese/'
+original_recipe = getAllData(url)
 
 
 
