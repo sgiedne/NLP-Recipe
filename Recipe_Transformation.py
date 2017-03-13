@@ -7,6 +7,8 @@ from nltk.chunk import ne_chunk
 import json
 import unicodedata
 import requests
+from fractions import Fraction
+
 
 measurement_list = ['package','cup','cups','teaspoon','teaspoons',
 						'tablespoon','tablespoons','clove','cloves','ounce',
@@ -870,7 +872,7 @@ def showRecipe(orig):
 # getAllData('http://allrecipes.com/recipe/23600/worlds-best-lasagna/')
 # getIngredients('http://allrecipes.com/recipe/lasagna-alfredo/')
 
-def update_steps():
+def update_steps(directions_list):
   for index,vaule in enumerate(directions_list):
     try:
          formated_step=vaule.encode("utf-8")
@@ -887,7 +889,7 @@ def update_steps():
  
     except:
            print vaule+"contains non alphabet leter"      
-
+  return directions_list  
 
 #==============================================================================
 # PPS: Increase the denominator by given increase_value
@@ -903,7 +905,200 @@ def update_fraction(a_fraction, increase_value):
     return new_fraction
 
 def update_quantity(a_fraction):
+	# print "########################"
     return str(update_fraction(a_fraction,1))
+
+
+
+#==============================================================================
+# This code sections is for tool transformation
+# Available transformation: 
+# Bake  -> Fry
+# Bake  -> Steam
+# Steam -> Fry
+# Steam -> Bake
+#==============================================================================
+print "--------------For Tools Transformation-------------------"
+
+#1. Bake ->  Fry
+
+#==============================================================================
+# def replace_tools(pre_tool, updt_tool,tool_lst):
+#     for index,tool in enumerate(tool_lst):
+#         lower_tool= tool.encode("utf-8").lower()
+#         #print lower_tool
+#         if pre_tool.lower() in lower_tool:
+#             tool_lst[index]=updt_tool
+# #            print "catched"
+#     return tool_lst
+#==============================================================================
+
+def replace_elements(pre_item, updt_item,item_lst):
+    for index,item in enumerate(item_lst):
+        lower_item= item.encode("utf-8").lower()
+        #print lower_item
+        if pre_item.lower() in lower_item:
+            item_lst[index]=updt_item
+#            print "catched"
+    return item_lst
+
+
+
+def update_steps_in_tool_transform(lst_pre_item,updt_item, dir_list):
+  for index,vaule in enumerate(dir_list):
+    try:
+         formated_step=vaule.encode("utf-8")
+         for ch in lst_pre_item:
+            if ch in formated_step:
+              new_step=formated_step.replace(ch, updt_item)
+              dir_list[index]=new_step         
+    except:
+           print vaule+"contains non alphabet leter"      
+  return     dir_list  
+
+def Updata_Quantity_list(protein_list, ingre_list,quantity_list, isIncrease):
+    
+    protein_index_list=[]
+    
+    #Get non-protein list
+    for index,ingre in enumerate(ingre_list):
+        try:
+            for protein in protein_list:
+                if protein.lower() in ingre.lower():
+                    protein_index_list.append(index)
+        except:
+             pass
+         
+    
+    #Update quantity
+    if not isIncrease:
+        for index in range(0,len(ingre_list)):
+            if index not in protein_index_list:
+            #Update dedicated quantity
+                prev_quantity= quantity_list[index]            
+                upd_quantity = increase_quantity(prev_quantity)   
+                quantity_list[index]=upd_quantity  
+    else:
+        for index in protein_index_list:
+            #Update dedicated quantity
+            prev_quantity= quantity_list[index]            
+            upd_quantity = increase_quantity(prev_quantity)   
+            quantity_list[index]=upd_quantity  
+
+        
+    return   quantity_list              
+    
+def bake2fry(toollist, methodlist, ingredient_list,directionlist,ingre_quantitylist):
+           
+    print toollist
+    print methodlist
+    print directionlist
+    
+    
+    toollist   =replace_elements("oven", "pan", toollist)
+    methodlist =replace_elements("bake", "fry", methodlist)
+    directionlist  =update_steps_in_tool_transform(['bake','Bake'],'fry',directionlist)
+    directionlist  =update_steps_in_tool_transform(['oven','Oven'],'pan',directionlist)
+    
+    print "Original quantity list"
+    print ingre_quantitylist
+    ingre_quantitylist=Updata_Quantity_list(protein_list,ingredient_list,ingre_quantitylist, False)
+        
+    print "Update quantity list"
+    print ingre_quantitylist   
+            
+    print toollist
+    print methodlist
+    print directionlist
+
+
+# bake2fry(glb_tools_list,glb_methods_list,glb_ingredients_list,directions_list,glb_ingredients_quantity_list)
+
+
+#2. Fry  ->  Bake
+def fry2bake(toollist, methodlist, ingredient_list,directionlist,ingre_quantitylist):
+           
+    print toollist
+    print methodlist
+    print directionlist
+    
+    
+    toollist   =replace_elements("pan", " oven", toollist)
+    methodlist =replace_elements("fry", "bake", methodlist)
+    directionlist  =update_steps_in_tool_transform(['fry','Fry'],'bake',directionlist)
+    directionlist  =update_steps_in_tool_transform(['pan','Pan'],'oven',directionlist)
+    
+    print "Original quantity list"
+    print ingre_quantitylist
+    ingre_quantitylist=Updata_Quantity_list(protein_list,ingredient_list,ingre_quantitylist,True)
+        
+    print "Update quantity list"
+    print ingre_quantitylist   
+            
+    print toollist
+    print methodlist
+    print directionlist
+
+
+# fry2bake(glb_tools_list,glb_methods_list,glb_ingredients_list,directions_list,glb_ingredients_quantity_list)
+
+#3. Roast ->  Fry
+
+def roast2fry(toollist, methodlist, ingredient_list,directionlist,ingre_quantitylist):
+           
+    print toollist
+    print methodlist
+    print directionlist
+    
+    
+    toollist   =replace_elements("oven", "pan", toollist)
+    methodlist =replace_elements("roast", "fry", methodlist)
+    directionlist  =update_steps_in_tool_transform(['roast','Roast'],'fry',directionlist)
+    directionlist  =update_steps_in_tool_transform(['oven','Oven'],'pan',directionlist)
+    
+    print "Original quantity list"
+    print ingre_quantitylist
+    ingre_quantitylist=Updata_Quantity_list(protein_list,ingredient_list,ingre_quantitylist, False)
+        
+    print "Update quantity list"
+    print ingre_quantitylist   
+            
+    print toollist
+    print methodlist
+    print directionlist
+
+
+# roast2fry(glb_tools_list,glb_methods_list,glb_ingredients_list,directions_list,glb_ingredients_quantity_list)
+
+
+#4. Fry  ->  Roast
+def fry2roast(toollist, methodlist, ingredient_list,directionlist,ingre_quantitylist):
+           
+    print toollist
+    print methodlist
+    print directionlist
+    
+    
+    toollist   =replace_elements("pan", "oven", toollist)
+    methodlist =replace_elements("fry", "roast", methodlist)
+    directionlist  =update_steps_in_tool_transform(['fry','Fry'],'roast',directionlist)
+    directionlist  =update_steps_in_tool_transform(['pan','Pan'],'oven',directionlist)
+    
+    print "Original quantity list"
+    print ingre_quantitylist
+    ingre_quantitylist=Updata_Quantity_list(protein_list,ingredient_list,ingre_quantitylist,True)
+        
+    print "Update quantity list"
+    print ingre_quantitylist   
+            
+    print toollist
+    print methodlist
+    print directionlist
+
+
+# fry2roast(glb_tools_list,glb_methods_list,glb_ingredients_list,directions_list,glb_ingredients_quantity_list)
+
+
 
 
 def getHealthy(original_recipe, url, level):
@@ -913,7 +1108,9 @@ def getHealthy(original_recipe, url, level):
 	glb_tools_list                =list(original_recipe["tools"])
 	glb_methods_list              =list(original_recipe["methods"])
 
-
+	print "original!!"
+	showRecipe(original_recipe)
+	print "original!!"
 	directions_list=[]
 	directions = getDirections(url)
 	index=1
@@ -935,7 +1132,7 @@ def getHealthy(original_recipe, url, level):
 	    merged_item=" ".join(value["item"])
 	    glb_ingredients_list.append(merged_item)
 	#    print merged_item
-
+	# print ingredients_list
 	#print glb_ingredients_list
 
 	#PPS: Get ingredient quantity
@@ -943,9 +1140,14 @@ def getHealthy(original_recipe, url, level):
 	    quantity=value["quantity"]
 	    glb_ingredients_quantity_list.append(quantity)
 
+	print "#######################################################3"
+	print glb_ingredients_list
+	print "#######################################################3"
 	for index,vaule in enumerate(glb_ingredients_list):
 	    try:
 	        lower_ingredient= vaule.encode("utf-8").lower()
+	        print lower_ingredient
+        	print "#######################################################3"
 	        if "butter" in lower_ingredient:
 	            #Update ingredient name list
 	            lower_ingredient=  lower_ingredient.replace("butter","margarine")
@@ -954,9 +1156,20 @@ def getHealthy(original_recipe, url, level):
 	            
 	            #Update dedicated quantity
 	            prev_quantity= glb_ingredients_quantity_list[index]            
-	            upd_quantity = update_quantity(prev_quantity)   
+	            print "!!!!!"
+	            print prev_quantity
+	            upd_quantity = update_quantity(prev_quantity) 
+	            print "11111"
+	            print upd_quantity  
 	            glb_ingredients_quantity_list[index]=upd_quantity
-	            update_steps()
+	            print "22222"
+	            print glb_ingredients_quantity_list[index]
+
+	            print "!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	            print directions_list
+	            directions_list = update_steps(directions_list)
+	            print "!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	            print directions_list
 	        else:
 	            pass
 	    except:
@@ -979,11 +1192,11 @@ def getHealthy(original_recipe, url, level):
 
 	for i in original_recipe["ingredients"]:
 		# print original_recipe["ingredients"][i]
-		print str(i)
-		print original_recipe["ingredients"][i]["item"]
-		print original_recipe["ingredients"][i]["quantity"]
-		print glb_ingredients_list[i-1]
-		print glb_ingredients_quantity_list[i-1]
+		# print str(i)
+		# print original_recipe["ingredients"][i]["item"]
+		# print original_recipe["ingredients"][i]["quantity"]
+		# print glb_ingredients_list[i-1]
+		# print glb_ingredients_quantity_list[i-1]
 		original_recipe["ingredients"][i]["item"] = glb_ingredients_list[i-1].split()
 		original_recipe["ingredients"][i]["quantity"] = glb_ingredients_quantity_list[i-1].split()
 
@@ -993,6 +1206,32 @@ def getHealthy(original_recipe, url, level):
 	print "Directions after healthy transformation"
 	print str(len(original_recipe["step"]))
 	print str(len(directions_list))
+	print "@@@@@@@@@@@@@@@ Ingredient - STEP 1 @@@@@@@@@@@@@@@"
+	# print original_recipe["step"]
+	print original_recipe["step"][0]
+	print original_recipe["step"][1]
+	print "@@@@@@@@@@@@@@@ Ingredient - STEP 2 @@@@@@@@@@@@@@@"
+	print directions_list[0]
+	print directions_list[1]
+	print directions_list[2]
+	print directions_list[3]
+	
+
+	if len(original_recipe["step"]) == len(directions_list):
+		count = 0
+		for i in original_recipe["step"]:
+			print i
+			original_recipe["step"][count] = directions_list[count]
+			count += 1
+	elif len(original_recipe["step"]) < len(directions_list):
+		del original_recipe["step"]
+		# for i in directions_list:
+		original_recipe.update({'step':directions_list})
+
+
+
+	print "@@@@@@@@@@@@@@@ Ingredient - STEP 3 @@@@@@@@@@@@@@@"
+
 
 	for step in directions_list:
 	    print step
@@ -1007,8 +1246,8 @@ def getHealthy(original_recipe, url, level):
 
 
 # input_url = 'http://allrecipes.com/recipe/66814/thai-crab-rolls/'
-input_url = 'http://allrecipes.com/recipe/14319/chinese-chicken-salad-iii'
-
+# input_url = 'http://allrecipes.com/recipe/14319/chinese-chicken-salad-iii'
+input_url = 'http://allrecipes.com/recipe/18114/butter-crescents/'
 
 
 # print all_cuisine_list[0]
