@@ -109,48 +109,58 @@ method_list = ["Amandine", "Anti-griddle",
 "Tandoor", "Tataki", "Tempering", "Tenderizing", "Teriyaki", "Thermal cooking", "Thermization", "Thickening", "Transglutaminase", "Turbo cooking", "Turkey fryer",
 "Vietnamese cooking techniques", "Wok cooking"]
 
-vegi_sauce = ["Alfredo sauce", "Apricot Cherry Compote sauce", "Arugula Pesto sauce", 
+vegi_sauce = ["Alfredo sauce", "Apricot Cherry Compote sauce", "Arugula Pesto sauce", "Apple sauce", "Adobo sauce", 
+"Barbecue sauce", "Browning sauce", "Brown Sugar sauce", "Black soy sauce", 
 "Bechamel sauce", "Berry sauce", "Bottle hot pepper sauce", "Cashew Bechamel sauce", "Cashew Cream sauce", "Chili garlic sauce", "Chily Soy Dipping sauce", 
 "Chimichurri sauce", "Cranberry sauce", "Canned tomato sauce", 
+"Caramel sauce", "Chile sauce", "Chili bean sauce", "Chile-garlic sauce", 
+"Dash hot sauce", "Dash hot pepper sauce", "Dark soy sauce", 
+"Dipping sauce", "Dry enchilada sauce", "Drops hot pepper sauce", 
+"Dash soy sauce", 
+"Enchilada sauce", 
 "Fresh Tomato sauce", "Fruity BBQ sauce", 
+"Hot sauce", "Hoisin sauce", 
+"Green chile enchilada sauce", "Gluten-free soy sauce", 
 "Goat Cheese sauce", "Gravy sauce", "Grilled Tomato sauce", "Garlic sauce", 
 "Herby Wine sauce", "Hot Pepper sauce", 
 "Italian Tomato sauce", 
 "Jar tomato pasta sauce", 
+"Jars spaghetti sauce", "Jars pasta sauce", "Jar picante sauce", "Jar taco sauce", "Jalapeno sauce", 
+"Lite soy sauce", 
+"Low sodium soy sauce", 
+"Marinara sauce", "Mango hot sauce", 
 "Kiss the Cook Tomato sauce", "Korean-Inspired Dipping sauce", 
 "Mushroom sauce", "Mushroom-Miso Gravy sauce", 
 "Pasta with Squash sauce", "Pea Pesto sauce", "Peanut sauce", "Pesto sauce", "Pico de Gallo Salsa sauce", "Pistou sauce", 
+"Prepared marinara sauce", "Prepared barbecue sauce", 
+"Pizza sauce", "Parsley sauce", "Pesto sauce", "Processed cheese sauce", 
 "Quick BBQ sauce", 
+"Quick Thai Dipping sauce", 
+"Roasted Garlic sauce", "Raspberry Apple sauce", "Reduced-sodium soy sauce", "Red enchilada sauce", "Red pimento sauce", 
+"soy sauce", 
+"Sriracha hot sauce", "Salted Caramel sauce", "Seasoned Soy sauce", "Sofrito sauce", "Spaghetti sauce", "Sriracha hot sauce", 
+"Thai chili sauce", "Thai peanut sauce", "Tonkatsu sauce", "Taco sauce", "Thicken sauce", "Thick soy sauce", "Tahini sauce", 
 "Raw Marinara sauce", "Red Chile sauce", "Red Pepper Coulis sauce", 
 "Sage Gravy sauce", "Salsa a la huancaina sauce", "Seitan Bolognese sauce", "Seitan Broth Gravy sauce", "Sherry sauce", "Spicy Tomato Cream sauce", 
 "Sun-Dried Tomato Pesto sauce", 
 "Tahini sauce", "Tartar sauce", "Tomato sauce", "Tomato Garlic sauce", "Tomato-based chili sauce", "Tzatziki Cucumber Dip sauce", "Teriyaki marinade sauce", 
 "Teriyaki sauce", 
 "Unsweetened Apple sauce", "Walnut sauce", "Whole cranberry sauce", 
+"Vegetarian Worcestershire sauce", 
+"Wweet and sour sauce", "Wweet soy sauce", "White Chocolate Brandy sauce", 
 "Zabaglione sauce"]
 
 vegan_sauce = ["Vegan Cheese sauce", "Savory Vegan sauce", "Fresh Tomato Dipping sauce"]
 
-non_veg_sauce = ["Apple sauce", "Adobo sauce", "Asian fish sauce", 
-"Barbecue sauce", "Browning sauce", "Brown Sugar sauce", "Black soy sauce", 
-"Caramel sauce", "Chile sauce", "Chili bean sauce", "Chile-garlic sauce", 
-"Dash hot sauce", "Dash hot pepper sauce", "Dark soy sauce", "Duck sauce", "Dipping sauce", "Dry enchilada sauce", "Drops hot pepper sauce", 
-"Dash soy sauce", 
-"Enchilada sauce", 
+non_veg_sauce = ["Asian fish sauce", 
+"Duck sauce", 
 "Fish sauce", 
-"Hot sauce", "Hoisin sauce", 
-"Green chile enchilada sauce", "Gluten-free soy sauce", 
-"Jars spaghetti sauce", "Jars pasta sauce", "Jar picante sauce", "Jar taco sauce", "Jalapeno sauce", 
-"Lite soy sauce", "Lamb sauce", "Low sodium soy sauce", 
-"Marinara sauce", "Mango hot sauce", 
+"Hollandaise sauce", 
+"Lamb sauce", 
 "Oyster sauce", 
-"Prepared marinara sauce", "Prepared barbecue sauce", "Prepared hollandaise sauce", "Pizza sauce", "Parsley sauce", "Pesto sauce", "Processed cheese sauce", 
-"Quick Thai Dipping sauce", 
-"Roasted Garlic sauce", "Raspberry Apple sauce", "Reduced-sodium soy sauce", "Red enchilada sauce", "Red pimento sauce", 
-"soy sauce", "Steak sauce", "Sriracha hot sauce", "Salted Caramel sauce", "Seasoned Soy sauce", "Sofrito sauce", "Spaghetti sauce", "Sriracha hot sauce", 
-"Thai chili sauce", "Thai peanut sauce", "Tonkatsu sauce", "Taco sauce", "Thicken sauce", "Thick soy sauce", "Tahini sauce", 
-"Vegetarian Worcestershire sauce", 
-"Wweet and sour sauce", "Wweet soy sauce", "White Chocolate Brandy sauce", "Worcestershire sauce"]
+"Prepared hollandaise sauce", 
+"Steak sauce", 
+"Worcestershire sauce"]
 
 
 african_main_dishes = ["hot sauce", "soy sauce", "chipotle pepper in adobo sauce", "adobo sauce from chipotle peppers", "tomato sauce", 
@@ -239,11 +249,11 @@ all_cuisine_list_text = ["african_main_dishes", "african_side_dishes", "african_
 protein_list = [
 "anchovy", "anchovies",
 "beef",
-"chicken", 
+"chicken", "crab", "crabmeat",  
 "duck", 
 "egg", "eggs", 
 "fillet", "fish", 
-"mussels"
+"mussels", "mussel", 
 "lamb", 
 "oyster", "oysters",
 "pigeon", "pork", "prawn", "prawns",
@@ -268,7 +278,11 @@ sauce_list = [
 "paste"]
 
 cooked_carb_list = [
+"elbow macaroni",
+"farfalle",  
+"fusilli",
 "lasagna",
+"macaroni", 
 "noodles",
 "pasta",
 "rice", "rigatoni", 
@@ -679,7 +693,7 @@ def diytoeasy(orig, sel, url):
 
 	#DIY TO SUPER EASY TRANSFORMATION
 	if sel == "super easy":
-		print "Just go to a restaurant already!"
+		print "Have you checked the restaurants near you already? ;)"
 
 def transform(orig, sel):
 	print "########## Recipe Transformation ##########"
